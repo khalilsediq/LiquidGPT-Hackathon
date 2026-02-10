@@ -20,7 +20,8 @@ const ChatContainer = () => {
   const [messages, setMessages] = useState([]);
   const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL);
   const [currentConversationId, setCurrentConversationIdState] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Default to open on desktop (lg breakpoint is 1024px), closed on mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024);
   const { send, isLoading, error, clearError } = useOpenRouter();
   const { isDark, toggleDarkMode } = useDarkMode();
   const messagesEndRef = useRef(null);
