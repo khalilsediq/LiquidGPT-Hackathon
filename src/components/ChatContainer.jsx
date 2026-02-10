@@ -2,28 +2,64 @@ import React, { useState, useEffect, useRef } from 'react';
 import ChatHeader from './ChatHeader';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
+import Sidebar from './Sidebar';
+import DarkModeToggle from './DarkModeToggle';
 import { useOpenRouter } from '../hooks/useOpenRouter';
-import { saveConversation, loadConversation, clearConversation } from '../utils/storage';
+import { useDarkMode } from '../hooks/useDarkMode';
+import { 
+  saveConversation, 
+  getConversation, 
+  getAllConversations, 
+  setCurrentConversationId, 
+  getCurrentConversationId, 
+  generateConversationId 
+} from '../utils/conversationStorage';
 import { DEFAULT_MODEL } from '../constants/models';
 
 const ChatContainer = () => {
   const [messages, setMessages] = useState([]);
   const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL);
+  const [currentConversationId, setCurrentConversationIdState] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { send, isLoading, error, clearError } = useOpenRouter();
+  const { isDark, toggleDarkMode } = useDarkMode();
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const savedMessages = loadConversation();
-    if (savedMessages.length > 0) {
-      setMessages(savedMessages);
+    // Try to load current conversation
+    const savedConversationId = getCurrentConversationId();
+    if (savedConversationId) {
+      const conversation = getConversation(savedConversationId);
+      if (conversation && conversation.messages) {
+        setMessages(conversation.messages);
+        setCurrentConversationIdState(savedConversationId);
+      } else {
+        // Fallback to old storage format
+        const savedMessages = localStorage.getItem('chatgpt-clone-conversations');
+        if (savedMessages) {
+          try {
+            const parsed = JSON.parse(savedMessages);
+            if (Array.isArray(parsed)) {
+              setMessages(parsed);
+              // Migrate to new format
+              const newId = generateConversationId();
+              saveConversation(newId, parsed);
+              setCurrentConversationIdState(newId);
+              setCurrentConversationId(newId);
+            }
+          } catch (error) {
+            console.warn('Failed to migrate old conversation format:', error);
+          }
+        }
+      }
     }
   }, []);
 
   useEffect(() => {
-    if (messages.length > 0) {
-      saveConversation(messages);
+    if (messages.length > 0 && currentConversationId) {
+      saveConversation(currentConversationId, messages);
     }
-  }, [messages]);
+  }, [messages, currentConversationId]);
 
   useEffect(() => {
     scrollToBottom();
@@ -34,6 +70,14 @@ const ChatContainer = () => {
   };
 
   const handleSendMessage = async (userMessage) => {
+    // Create new conversation if needed
+    let conversationId = currentConversationId;
+    if (!conversationId) {
+      conversationId = generateConversationId();
+      setCurrentConversationIdState(conversationId);
+      setCurrentConversationId(conversationId);
+    }
+
     const userMsg = {
       id: Date.now(),
       role: 'user',
@@ -78,8 +122,31 @@ const ChatContainer = () => {
 
   const handleClearChat = () => {
     setMessages([]);
-    clearConversation();
+    setCurrentConversationIdState(null);
+    localStorage.removeItem('chatgpt-clone-current-conversation');
     clearError();
+  };
+
+  const handleNewChat = () => {
+    setMessages([]);
+    const newId = generateConversationId();
+    setCurrentConversationIdState(newId);
+    setCurrentConversationId(newId);
+    clearError();
+  };
+
+  const handleConversationSelect = (conversationId) => {
+    const conversation = getConversation(conversationId);
+    if (conversation) {
+      setMessages(conversation.messages || []);
+      setCurrentConversationIdState(conversationId);
+      setCurrentConversationId(conversationId);
+      clearError();
+    }
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleModelChange = (newModel) => {
@@ -87,13 +154,26 @@ const ChatContainer = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
-      <ChatHeader
-        selectedModel={selectedModel}
-        onModelChange={handleModelChange}
-        onClearChat={handleClearChat}
-        disabled={isLoading}
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onToggle={toggleSidebar}
+        currentConversationId={currentConversationId}
+        onConversationSelect={handleConversationSelect}
+        onNewChat={handleNewChat}
       />
+      
+      <div className="flex-1 flex flex-col">
+        <ChatHeader
+          selectedModel={selectedModel}
+          onModelChange={handleModelChange}
+          onClearChat={handleClearChat}
+          onNewChat={handleNewChat}
+          onToggleSidebar={toggleSidebar}
+          disabled={isLoading}
+        >
+          <DarkModeToggle isDark={isDark} onToggle={toggleDarkMode} />
+        </ChatHeader>
 
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-4xl mx-auto px-4 py-6">
@@ -139,11 +219,12 @@ const ChatContainer = () => {
         </div>
       </div>
 
-      <ChatInput
-        onSend={handleSendMessage}
-        disabled={isLoading}
-        isLoading={isLoading}
-      />
+        <ChatInput
+          onSend={handleSendMessage}
+          disabled={isLoading}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 };
