@@ -24,7 +24,7 @@ const ChatMessage = ({ message, isUser }) => {
         <div
           className={`px-4 py-3 rounded-2xl ${
             isUser
-              ? "bg-blue-600 text-white ml-12"
+              ? "bg-[var(--accent-primary)] hover:bg-[var(--accent-hover)] transition-colors text-white ml-12"
               : "bg-gray-100 dark:bg-[var(--bg-tertiary)] text-gray-900 dark:text-[var(--text-primary)] mr-12"
           }`}
         >

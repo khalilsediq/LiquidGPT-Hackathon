@@ -58,7 +58,7 @@ const ChatInput = ({ onSend, disabled, isLoading }) => {
           <button
             type="submit"
             disabled={!message.trim() || disabled || isLoading}
-            className="absolute right-2 bottom-2 p-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 disabled:hover:bg-blue-600"
+            className="absolute right-2 bottom-2 p-2 bg-[var(--accent-primary)] text-white rounded-xl hover:bg-[var(--accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
