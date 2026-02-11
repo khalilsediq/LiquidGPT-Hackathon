@@ -2,7 +2,15 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Premium Dark Theme with Logo Colors */
+/* Logo-based accent colors (available in both light and dark mode) */
+:root {
+  --accent-gradient: linear-gradient(135deg, #d946ef 0%, #a855f7 25%, #6366f1 75%, #06b6d4 100%);
+  --accent-primary: #a855f7;     /* Purple from logo - main accent */
+  --accent-hover: #c084fc;       /* Lighter purple for hover */
+  --accent-secondary: #6366f1;   /* Blue from logo for variety */
+}
+
+/* Premium Dark Theme */
 .dark {
   color-scheme: dark;
   
@@ -18,12 +26,6 @@
   --text-primary: #e5e5e5;       /* Main text */
   --text-secondary: #a0a0a0;     /* Secondary text */
   --text-tertiary: #737373;      /* Muted text */
-  
-  /* Logo-based accent colors (gradient: magenta → purple → blue → cyan) */
-  --accent-gradient: linear-gradient(135deg, #d946ef 0%, #a855f7 25%, #6366f1 75%, #06b6d4 100%);
-  --accent-primary: #a855f7;     /* Purple from logo - main accent */
-  --accent-hover: #c084fc;       /* Lighter purple for hover */
-  --accent-secondary: #6366f1;   /* Blue from logo for variety */
 }
 
 @keyframes fade-in {
