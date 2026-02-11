@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getAllConversations, deleteConversation, generateConversationId } from '../utils/conversationStorage';
+import logo from '../assets/logo.jfif';
 
 const Sidebar = ({ 
   isOpen, 
@@ -80,9 +81,12 @@ const Sidebar = ({
         {/* Header */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-              Chat History
-            </h2>
+            <div className="flex items-center space-x-2">
+              <img src={logo} alt="LiquidGPT Logo" className="w-8 h-8 rounded-full object-cover" />
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                LiquidGPT
+              </h2>
+            </div>
             <button
               onClick={onToggle}
               className="lg:hidden p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"

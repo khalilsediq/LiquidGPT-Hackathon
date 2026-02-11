@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatHeader from './ChatHeader';
+import logo from '../assets/logo.jfif';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import Sidebar from './Sidebar';
@@ -180,6 +181,7 @@ const ChatContainer = () => {
         <div className="max-w-4xl mx-auto px-4 py-6">
           {messages.length === 0 ? (
             <div className="text-center py-12">
+              <img src={logo} alt="LiquidGPT" className="w-24 h-24 mx-auto mb-6 rounded-full object-cover shadow-lg" />
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 Welcome to LiquidGPT
               </h2>
