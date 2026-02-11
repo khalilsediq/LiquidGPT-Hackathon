@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ChatHeader from './ChatHeader';
-import logo from '../assets/logo.jfif';
-import ChatMessage from './ChatMessage';
-import ChatInput from './ChatInput';
-import Sidebar from './Sidebar';
-import DarkModeToggle from './DarkModeToggle';
-import { useOpenRouter } from '../hooks/useOpenRouter';
-import { useDarkMode } from '../hooks/useDarkMode';
-import { 
-  saveConversation, 
-  getConversation, 
-  getAllConversations, 
-  setCurrentConversationId, 
-  getCurrentConversationId, 
-  generateConversationId 
-} from '../utils/conversationStorage';
-import { DEFAULT_MODEL } from '../constants/models';
+import React, { useState, useEffect, useRef } from "react";
+import ChatHeader from "./ChatHeader";
+import logo from "../assets/logo.jfif";
+import ChatMessage from "./ChatMessage";
+import ChatInput from "./ChatInput";
+import Sidebar from "./Sidebar";
+import DarkModeToggle from "./DarkModeToggle";
+import { useOpenRouter } from "../hooks/useOpenRouter";
+import { useDarkMode } from "../hooks/useDarkMode";
+import {
+  saveConversation,
+  getConversation,
+  getAllConversations,
+  setCurrentConversationId,
+  getCurrentConversationId,
+  generateConversationId,
+} from "../utils/conversationStorage";
+import { DEFAULT_MODEL } from "../constants/models";
 
 const ChatContainer = () => {
   const [messages, setMessages] = useState([]);
@@ -37,7 +37,9 @@ const ChatContainer = () => {
         setCurrentConversationIdState(savedConversationId);
       } else {
         // Fallback to old storage format
-        const savedMessages = localStorage.getItem('chatgpt-clone-conversations');
+        const savedMessages = localStorage.getItem(
+          "chatgpt-clone-conversations",
+        );
         if (savedMessages) {
           try {
             const parsed = JSON.parse(savedMessages);
@@ -50,7 +52,7 @@ const ChatContainer = () => {
               setCurrentConversationId(newId);
             }
           } catch (error) {
-            console.warn('Failed to migrate old conversation format:', error);
+            console.warn("Failed to migrate old conversation format:", error);
           }
         }
       }
@@ -68,7 +70,7 @@ const ChatContainer = () => {
   }, [messages]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSendMessage = async (userMessage) => {
@@ -82,50 +84,50 @@ const ChatContainer = () => {
 
     const userMsg = {
       id: Date.now(),
-      role: 'user',
+      role: "user",
       content: userMessage,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
-    setMessages(prev => [...prev, userMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     clearError();
 
     try {
       const conversationHistory = [
-        ...messages.map(msg => ({
+        ...messages.map((msg) => ({
           role: msg.role,
-          content: msg.content
+          content: msg.content,
         })),
-        { role: 'user', content: userMessage }
+        { role: "user", content: userMessage },
       ];
 
       const aiResponse = await send(conversationHistory, selectedModel);
 
       const aiMsg = {
         id: Date.now() + 1,
-        role: 'assistant',
+        role: "assistant",
         content: aiResponse,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
-      setMessages(prev => [...prev, aiMsg]);
+      setMessages((prev) => [...prev, aiMsg]);
     } catch (err) {
       const errorMsg = {
         id: Date.now() + 1,
-        role: 'assistant',
+        role: "assistant",
         content: `Error: ${err.message}`,
         timestamp: new Date().toISOString(),
-        isError: true
+        isError: true,
       };
 
-      setMessages(prev => [...prev, errorMsg]);
+      setMessages((prev) => [...prev, errorMsg]);
     }
   };
 
   const handleClearChat = () => {
     setMessages([]);
     setCurrentConversationIdState(null);
-    localStorage.removeItem('chatgpt-clone-current-conversation');
+    localStorage.removeItem("chatgpt-clone-current-conversation");
     clearError();
   };
 
@@ -164,7 +166,7 @@ const ChatContainer = () => {
         onConversationSelect={handleConversationSelect}
         onNewChat={handleNewChat}
       />
-      
+
       <div className="flex-1 flex flex-col">
         <ChatHeader
           selectedModel={selectedModel}
@@ -177,53 +179,66 @@ const ChatContainer = () => {
           <DarkModeToggle isDark={isDark} onToggle={toggleDarkMode} />
         </ChatHeader>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          {messages.length === 0 ? (
-            <div className="text-center py-12">
-              <img src={logo} alt="LiquidGPT" className="w-24 h-24 mx-auto mb-6 rounded-full object-cover shadow-lg" />
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                Welcome to LiquidGPT
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                Start a conversation by typing a message below.
-              </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-                Developed by <span className="font-semibold text-blue-600 dark:text-blue-400">QuettaCoders</span>
-              </p>
-            </div>
-          ) : (
-            <>
-              {messages.map((message) => (
-                <ChatMessage
-                  key={message.id}
-                  message={message}
-                  isUser={message.role === 'user'}
-                />
-              ))}
-              {isLoading && (
-                <div className="flex justify-start mb-4">
-                  <div className="max-w-3xl mr-12">
-                    <div className="px-4 py-3 rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                      <div className="flex items-center space-x-2">
-                        <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                        </div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          Thinking...
-                        </span>
-                      </div>
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-4xl mx-auto px-4 py-6">
+            {messages.length === 0 ? (
+              <div className="text-center py-12">
+                <img
+                  src={logo}
+      alt="LiquidGPT"
+     className="w-24 h-24 mx-auto mb-6 rounded-full object-cover shadow-lg"
+         />
+       <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+       Welcome to LiquidGPT
+  </h2>
+ <p className="text-gray-600 dark:text-gray-400">
+                  Start a conversation by typing a message below.
+    </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+         Developed by{" "}
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+        QuettaCoders
+                  </span>
+       </p>
+        </div>
+            ) : (
+              <>
+    {messages.map((message) => (
+       <ChatMessage
+     key={message.id}
+      message={message}
+      isUser={message.role === "user"}
+     />
+        ))}
+    {isLoading && (
+        <div className="flex justify-start mb-4">
+         <div className="max-w-3xl mr-12">
+ <div className="px-4 py-3 rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+  <div className="flex items-center space-x-2">
+   <div className="flex space-x-1">
+   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+           <div
+        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+             style={{ animationDelay: "0.1s" }}
+             ></div>
+          <div
+            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0.2s" }}
+        ></div>
+     </div>
+       <span className="text-sm text-gray-600 dark:text-gray-400">
+        Thinking...
+         </span>
+         </div>
+         </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </>
-          )}
-          <div ref={messagesEndRef} />
+                )}
+              </>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
         </div>
-      </div>
 
         <ChatInput
           onSend={handleSendMessage}
