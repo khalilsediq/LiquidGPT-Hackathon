@@ -158,7 +158,7 @@ const ChatContainer = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-screen bg-gray-50 dark:bg-[var(--bg-primary)]">
       <Sidebar
         isOpen={isSidebarOpen}
         onToggle={toggleSidebar}
@@ -185,52 +185,52 @@ const ChatContainer = () => {
               <div className="text-center py-12">
                 <img
                   src={logo}
-      alt="LiquidGPT"
-     className="w-24 h-24 mx-auto mb-6 rounded-full object-cover shadow-lg"
-         />
-       <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-       Welcome to LiquidGPT
-  </h2>
- <p className="text-gray-600 dark:text-gray-400">
+                  alt="LiquidGPT"
+                  className="w-24 h-24 mx-auto mb-6 rounded-full object-cover shadow-lg"
+                />
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                  Welcome to LiquidGPT
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
                   Start a conversation by typing a message below.
-    </p>
+                </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-         Developed by{" "}
+                  Developed by{" "}
                   <span className="font-semibold text-blue-600 dark:text-blue-400">
-        QuettaCoders
+                    QuettaCoders
                   </span>
-       </p>
-        </div>
+                </p>
+              </div>
             ) : (
               <>
-    {messages.map((message) => (
-       <ChatMessage
-     key={message.id}
-      message={message}
-      isUser={message.role === "user"}
-     />
-        ))}
-    {isLoading && (
-        <div className="flex justify-start mb-4">
-         <div className="max-w-3xl mr-12">
- <div className="px-4 py-3 rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-  <div className="flex items-center space-x-2">
-   <div className="flex space-x-1">
-   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-           <div
-        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-             style={{ animationDelay: "0.1s" }}
-             ></div>
-          <div
-            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-              style={{ animationDelay: "0.2s" }}
-        ></div>
-     </div>
-       <span className="text-sm text-gray-600 dark:text-gray-400">
-        Thinking...
-         </span>
-         </div>
-         </div>
+                {messages.map((message) => (
+                  <ChatMessage
+                    key={message.id}
+                    message={message}
+                    isUser={message.role === "user"}
+                  />
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start mb-4">
+                    <div className="max-w-3xl mr-12">
+                      <div className="px-4 py-3 rounded-2xl bg-gray-100 dark:bg-[var(--bg-tertiary)] text-gray-900 dark:text-[var(--text-primary)]">
+                        <div className="flex items-center space-x-2">
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div
+                              className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                              style={{ animationDelay: "0.1s" }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                              style={{ animationDelay: "0.2s" }}
+                            ></div>
+                          </div>
+                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                            Thinking...
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

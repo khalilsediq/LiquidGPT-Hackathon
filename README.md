@@ -1,16 +1,45 @@
-# React + Vite
+##chatGPT Clone, With the Name Of LiquidGPT.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+LiquidGPT is a ChatGPT clone, for SMIT Hackathon built with React, Vite, and TailwindCSS v4. The application integrates with OpenRouter's API to provide multi-model AI chat capabilities with conversation management, dark mode, and a modern UI.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Tech Stack
+Framework: React 19.2.0
+Build Tool: Vite 7.3.1
+Styling: TailwindCSS 4.1.18
+Markdown Rendering: react-markdown with syntax highlighting
+API: OpenRouter API (multiple free AI models)
+🏗️ Architecture
+Directory Structure
+LiquidGPT/
+├── public/
+│   └── vite.svg
+├── src/
+│   ├── assets/
+│   │   ├── logo.jfif        # Brand logo
+│   │   └── react.svg
+│   ├── components/
+│   │   ├── ChatContainer.jsx
+│   │   ├── ChatHeader.jsx
+│   │   ├── ChatInput.jsx
+│   │   ├── ChatMessage.jsx
+│   │   ├── DarkModeToggle.jsx
+│   │   ├── ModelSelector.jsx
+│   │   └── Sidebar.jsx
+│   ├── constants/
+│   │   └── models.js
+│   ├── hooks/
+│   │   ├── useDarkMode.js
+│   │   └── useOpenRouter.js
+│   ├── utils/
+│   │   ├── api.js
+│   │   ├── conversationStorage.js
+│   │   └── storage.js
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── .env                     # API key configuration
+├── .env.example
+├── index.html
+├── package.json
+└── vite.config.js

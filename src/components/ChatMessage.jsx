@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const ChatMessage = ({ message, isUser }) => {
   const formatTime = (timestamp) => {
-    return new Date(timestamp).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return new Date(timestamp).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -17,13 +17,15 @@ const ChatMessage = ({ message, isUser }) => {
   };
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`}>
-      <div className={`max-w-3xl ${isUser ? 'order-2' : 'order-1'}`}>
+    <div
+      className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4 animate-fade-in`}
+    >
+      <div className={`max-w-3xl ${isUser ? "order-2" : "order-1"}`}>
         <div
           className={`px-4 py-3 rounded-2xl ${
             isUser
-              ? 'bg-blue-600 text-white ml-12'
-              : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 mr-12'
+              ? "bg-blue-600 text-white ml-12"
+              : "bg-gray-100 dark:bg-[var(--bg-tertiary)] text-gray-900 dark:text-[var(--text-primary)] mr-12"
           }`}
         >
           {!isUser && (
@@ -39,7 +41,7 @@ const ChatMessage = ({ message, isUser }) => {
               </button>
             </div>
           )}
-          
+
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.content}</p>
           ) : (
@@ -48,11 +50,13 @@ const ChatMessage = ({ message, isUser }) => {
                 remarkPlugins={[remarkGfm]}
                 components={{
                   code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || '');
+                    const match = /language-(\w+)/.exec(className || "");
                     return !inline && match ? (
                       <div className="relative">
                         <button
-                          onClick={() => copyToClipboard(String(children).replace(/\n$/, ''))}
+                          onClick={() =>
+                            copyToClipboard(String(children).replace(/\n$/, ""))
+                          }
                           className="absolute top-2 right-2 text-xs bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition-colors"
                         >
                           Copy
@@ -64,15 +68,18 @@ const ChatMessage = ({ message, isUser }) => {
                           className="rounded-lg"
                           {...props}
                         >
-                          {String(children).replace(/\n$/, '')}
+                          {String(children).replace(/\n$/, "")}
                         </SyntaxHighlighter>
                       </div>
                     ) : (
-                      <code className="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm" {...props}>
+                      <code
+                        className="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm"
+                        {...props}
+                      >
                         {children}
                       </code>
                     );
-                  }
+                  },
                 }}
               >
                 {message.content}
@@ -80,8 +87,10 @@ const ChatMessage = ({ message, isUser }) => {
             </div>
           )}
         </div>
-        
-        <div className={`text-xs text-gray-500 dark:text-gray-400 mt-1 ${isUser ? 'text-right' : 'text-left'}`}>
+
+        <div
+          className={`text-xs text-gray-500 dark:text-gray-400 mt-1 ${isUser ? "text-right" : "text-left"}`}
+        >
           {formatTime(message.timestamp)}
         </div>
       </div>

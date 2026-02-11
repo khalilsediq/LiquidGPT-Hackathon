@@ -2,9 +2,28 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Dark mode styles */
+/* Premium Dark Theme with Logo Colors */
 .dark {
   color-scheme: dark;
+  
+  /* Premium color palette - sophisticated monochromatic */
+  --bg-primary: #0a0a0a;        /* Deep black background */
+  --bg-secondary: #0d0d0d;      /* Elevated surfaces (slightly warmer) */
+  --bg-tertiary: #141414;        /* Cards and panels */
+  --bg-hover: #1a1a1a;           /* Hover states */
+  
+  --border-primary: #1f1f1f;     /* Subtle borders */
+  --border-secondary: #2a2a2a;   /* Lighter borders */
+  
+  --text-primary: #e5e5e5;       /* Main text */
+  --text-secondary: #a0a0a0;     /* Secondary text */
+  --text-tertiary: #737373;      /* Muted text */
+  
+  /* Logo-based accent colors (gradient: magenta → purple → blue → cyan) */
+  --accent-gradient: linear-gradient(135deg, #d946ef 0%, #a855f7 25%, #6366f1 75%, #06b6d4 100%);
+  --accent-primary: #a855f7;     /* Purple from logo - main accent */
+  --accent-hover: #c084fc;       /* Lighter purple for hover */
+  --accent-secondary: #6366f1;   /* Blue from logo for variety */
 }
 
 @keyframes fade-in {
@@ -41,11 +60,11 @@
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: #2a2a2a;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: #3a3a3a;
 }
 
 /* Prose styling for markdown */
