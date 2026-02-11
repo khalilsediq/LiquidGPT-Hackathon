@@ -3,7 +3,10 @@ import React from 'react';
 const DarkModeToggle = ({ isDark, onToggle }) => {
   return (
     <button
-      onClick={onToggle}
+      onClick={() => {
+        console.log('DarkModeToggle clicked');
+        onToggle();
+      }}
       className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
       aria-label="Toggle dark mode"
     >
