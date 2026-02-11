@@ -20,7 +20,6 @@ export const useDarkMode = () => {
   }, [isDark]);
 
   const toggleDarkMode = () => {
-    console.log("Toggling dark mode. Current state:", isDark);
     setIsDark(!isDark);
   };
 

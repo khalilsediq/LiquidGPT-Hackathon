@@ -33,7 +33,7 @@ const ChatHeader = ({ selectedModel, onModelChange, onClearChat, onNewChat, onTo
             </button>
             
             <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100 hidden sm:block">
-              ChatGPT Clone
+              LiquidGPT
             </h1>
             
             <ModelSelector
